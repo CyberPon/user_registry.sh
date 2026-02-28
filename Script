@@ -1,13 +1,32 @@
 #!/bin/bash
 # User Registry Script
-# Collects and stores user registration information
+# Collects user registration information interactively, displays a summary,
+# and saves a record to a dated text file in the current directory.
+#
+# Usage:
+#   chmod +x Script
+#   ./Script
+#
+# Output file: user_registry_YYYYMMDD.txt (created in the current directory)
 
+# ---------------------------------------------------------------------------
+# Display a welcome banner so the user knows the script has started.
+# The fixed-width border keeps the output readable in any terminal.
+# ---------------------------------------------------------------------------
 echo "========================================"
 echo "      USER REGISTRATION SYSTEM"
 echo "========================================"
 echo ""
 
-# Ask for input
+# ---------------------------------------------------------------------------
+# Collect user input.
+# `echo -n` suppresses the trailing newline so the cursor stays on the same
+# line as the prompt, giving a cleaner interactive feel.
+# `read` stores the response in the named variable.
+#
+# Note: No input validation is performed here. Consider adding checks for
+# required fields or acceptable values (see README for examples).
+# ---------------------------------------------------------------------------
 echo -n "Enter Full Name: "
 read FULL_NAME
 
@@ -17,10 +36,16 @@ read DEPARTMENT
 echo -n "Enter Employee ID: "
 read EMPLOYEE_ID
 
+# Access Level should be one of: Admin, User, or Guest.
+# Future improvement: use a `select` menu or validate against allowed values.
 echo -n "Enter Access Level (Admin/User/Guest): "
 read ACCESS_LEVEL
 
-# Display summary
+# ---------------------------------------------------------------------------
+# Display a registration summary in the terminal.
+# `date '+%Y-%m-%d %H:%M:%S'` produces a human-readable, ISO-8601-style
+# timestamp that is consistent on both GNU/Linux and macOS (BSD date).
+# ---------------------------------------------------------------------------
 echo ""
 echo "========================================"
 echo "         REGISTRATION SUMMARY"
@@ -33,19 +58,32 @@ echo "Registration Date: $(date '+%Y-%m-%d %H:%M:%S')"
 echo "========================================"
 echo ""
 
-# Create filename with today's date
+# ---------------------------------------------------------------------------
+# Build the output filename using today's date (YYYYMMDD format).
+# Using a date-based name means a new file is created each day; multiple
+# registrations on the same day will overwrite the previous content.
+# Future improvement: use `>>` (append) instead of `>` to accumulate records.
+# ---------------------------------------------------------------------------
 FILENAME="user_registry_$(date +%Y%m%d).txt"
 
-# Save to file
-echo "=======================================" > $FILENAME
-echo "      USER REGISTRATION RECORD" >> $FILENAME
-echo "=======================================" >> $FILENAME
-echo "Full Name: $FULL_NAME" >> $FILENAME
-echo "Department: $DEPARTMENT" >> $FILENAME
-echo "Employee ID: $EMPLOYEE_ID" >> $FILENAME
-echo "Access Level: $ACCESS_LEVEL" >> $FILENAME
-echo "Registration Date: $(date '+%Y-%m-%d %H:%M:%S')" >> $FILENAME
-echo "=======================================" >> $FILENAME
+# ---------------------------------------------------------------------------
+# Write the registration record to the file.
+# The first `echo` uses `>` to create/overwrite the file, and subsequent
+# lines use `>>` to append.
+#
+# Security note: consider restricting file permissions after creation, e.g.:
+#   chmod 600 "$FILENAME"
+# ---------------------------------------------------------------------------
+echo "=======================================" > "$FILENAME"
+echo "      USER REGISTRATION RECORD" >> "$FILENAME"
+echo "=======================================" >> "$FILENAME"
+echo "Full Name: $FULL_NAME" >> "$FILENAME"
+echo "Department: $DEPARTMENT" >> "$FILENAME"
+echo "Employee ID: $EMPLOYEE_ID" >> "$FILENAME"
+echo "Access Level: $ACCESS_LEVEL" >> "$FILENAME"
+echo "Registration Date: $(date '+%Y-%m-%d %H:%M:%S')" >> "$FILENAME"
+echo "=======================================" >> "$FILENAME"
 
+# Confirm successful save to the user.
 echo "✅ Registration saved to: $FILENAME"
 echo ""
