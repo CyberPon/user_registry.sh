@@ -1,0 +1,51 @@
+#!/bin/bash
+# User Registry Script
+# Collects and stores user registration information
+
+echo "========================================"
+echo "      USER REGISTRATION SYSTEM"
+echo "========================================"
+echo ""
+
+# Ask for input
+echo -n "Enter Full Name: "
+read FULL_NAME
+
+echo -n "Enter Department: "
+read DEPARTMENT
+
+echo -n "Enter Employee ID: "
+read EMPLOYEE_ID
+
+echo -n "Enter Access Level (Admin/User/Guest): "
+read ACCESS_LEVEL
+
+# Display summary
+echo ""
+echo "========================================"
+echo "         REGISTRATION SUMMARY"
+echo "========================================"
+echo "Full Name: $FULL_NAME"
+echo "Department: $DEPARTMENT"
+echo "Employee ID: $EMPLOYEE_ID"
+echo "Access Level: $ACCESS_LEVEL"
+echo "Registration Date: $(date '+%Y-%m-%d %H:%M:%S')"
+echo "========================================"
+echo ""
+
+# Create filename with today's date
+FILENAME="user_registry_$(date +%Y%m%d).txt"
+
+# Save to file
+echo "=======================================" > $FILENAME
+echo "      USER REGISTRATION RECORD" >> $FILENAME
+echo "=======================================" >> $FILENAME
+echo "Full Name: $FULL_NAME" >> $FILENAME
+echo "Department: $DEPARTMENT" >> $FILENAME
+echo "Employee ID: $EMPLOYEE_ID" >> $FILENAME
+echo "Access Level: $ACCESS_LEVEL" >> $FILENAME
+echo "Registration Date: $(date '+%Y-%m-%d %H:%M:%S')" >> $FILENAME
+echo "=======================================" >> $FILENAME
+
+echo "✅ Registration saved to: $FILENAME"
+echo ""
